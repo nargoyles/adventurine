@@ -1,3 +1,4 @@
+require 'colorize'
 system ("cls")
 system "clear"
 
@@ -55,7 +56,13 @@ loop do
   #Print the board each time through
   board.each do |row|
     row.each do |column|
-      print "#{column} "
+      if column == character.chars[0].upcase
+        print "#{column} ".green
+      elsif column == "g"
+        print "#{column} ".yellow
+      else
+        print "#{column} "
+      end
     end
     puts ""
   end
