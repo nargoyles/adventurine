@@ -89,7 +89,7 @@ loop do
         user_x -= 1
         if board[user_y][user_x] == 'g'
           user_gold += 10
-          message "You found gold! You have #{user_gold} now."
+          message = "You found gold! You have #{user_gold} now."
         end
         board[user_y][user_x] = character.chars[0].upcase
       else
