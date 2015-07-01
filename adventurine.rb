@@ -16,7 +16,7 @@ valid_moves = ['w', 'a', 's', 'd', 'x', 'p']
 puts "What is your character's name?"
 character = gets.chomp
 
-board[user_x][user_y] = character.chars[0].upcase
+board[user_y][user_x] = character.chars[0].upcase
 
 
 board.each do |row|
