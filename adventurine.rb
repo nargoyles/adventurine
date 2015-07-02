@@ -39,8 +39,10 @@ def addGold(game)
     row.each_with_index do |col, col_index|
       rando = r.rand(1..100)
       unless game[:obstacles].include? col
-        if rando > 95 && col
-          game[:board][row_index][col_index] = game[:gold_tiles].sample
+        unless game[:water_tiles].include? col
+          if rando > 95 && col
+            game[:board][row_index][col_index] = game[:gold_tiles].sample
+          end
         end
       end
     end
@@ -59,7 +61,7 @@ def printBoard(game, user)
       elsif game[:obstacles].include? column
         print "#{column}".white.on_black
       elsif game[:water_tiles].include? column
-        print "#{column}".light_blue.on_black
+        print "#{column}".white.on_blue
       else
         print "#{column}".light_black.on_black
       end
@@ -78,7 +80,7 @@ end
 def moveUser(game, user)
   game[:moveCount] += 1
   puts "WASD/P/I/X ?"
-  move = gets.chomp #read_char
+  move = read_char
   puts move
   if game[:validMoves].include? move
     if move == 'w' #|| "\e[A"
