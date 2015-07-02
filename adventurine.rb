@@ -38,15 +38,21 @@ board.each_with_index do |row, row_index|
   end
 end
 
-user_gold = 0
-user_x = 0
-user_y = 0
+user = {
+  gold: 0,
+  x: 0,
+  y: 0,
+  name: "",
+  initial: ""
+}
 valid_moves = ['w', 'a', 's', 'd', 'x', 'p', 'i']
 
 puts "What is your character's name?"
-character = gets.chomp
+name = gets.chomp
+user[:name] = name
+user[:initial] = name.chars[0].upcase
 
-board[user_y][user_x] = character.chars[0].upcase
+board[user[:y]][user[:x]] = user[:initial]
 index = 0
 message = ""
 
@@ -56,7 +62,7 @@ loop do
   #Print the board each time through
   board.each do |row|
     row.each do |column|
-      if column == character.chars[0].upcase
+      if column == user[:initial]
         print "#{column} ".green
       elsif column == "g"
         print "#{column} ".yellow
@@ -78,60 +84,60 @@ loop do
   if valid_moves.include? move
     if move == 'w'
       puts "Walking up..."
-      if user_y - 1 >= 0 && board[user_y - 1].length >= user_x
-        board[user_y][user_x] = "_"
-        user_y -= 1
-        if board[user_y][user_x] == 'g'
-          user_gold += 10
-          message = "You found gold! You have #{user_gold} now."
+      if user[:y] - 1 >= 0 && board[user[:y] - 1].length >= user[:x]
+        board[user[:y]][user[:x]] = "_"
+        user[:y] -= 1
+        if board[user[:y]][user[:x]] == 'g'
+          user[:gold] += 10
+          message = "You found gold! You have #{user[:gold]} now."
         end
-        board[user_y][user_x] = character.chars[0].upcase
+        board[user[:y]][user[:x]] = user[:initial]
       else
         message = "You bumped into a wall"
       end
     elsif move == 'a'
       puts "Walking left..."
-      if user_x - 1 >= 0
-        board[user_y][user_x] = "_"
-        user_x -= 1
-        if board[user_y][user_x] == 'g'
-          user_gold += 10
-          message = "You found gold! You have #{user_gold} now."
+      if user[:x] - 1 >= 0
+        board[user[:y]][user[:x]] = "_"
+        user[:x] -= 1
+        if board[user[:y]][user[:x]] == 'g'
+          user[:gold] += 10
+          message = "You found gold! You have #{user[:gold]} now."
         end
-        board[user_y][user_x] = character.chars[0].upcase
+        board[user[:y]][user[:x]] = user[:initial]
       else
         message = "You bumped into a wall"
       end
     elsif move == 's'
       puts "Walking down..."
-      if user_y + 1 < board.length && board[user_y + 1].length >= user_x
-        board[user_y][user_x] = "_"
-        user_y += 1
-        if board[user_y][user_x] == 'g'
-          user_gold += 10
-          message =  "You found gold! You have #{user_gold} now."
+      if user[:y] + 1 < board.length && board[user[:y] + 1].length >= user[:x]
+        board[user[:y]][user[:x]] = "_"
+        user[:y] += 1
+        if board[user[:y]][user[:x]] == 'g'
+          user[:gold] += 10
+          message =  "You found gold! You have #{user[:gold]} now."
         end
-        board[user_y][user_x] = character.chars[0].upcase
+        board[user[:y]][user[:x]] = user[:initial]
       else
         message = "You bumped into a wall"
       end
     elsif move == 'd'
       puts "Walking right..."
-      if user_x + 1 < board[user_y].length
-        board[user_y][user_x] = "_"
-        user_x += 1
-        if board[user_y][user_x] == 'g'
-          user_gold += 10
-          message = "You found gold! You have #{user_gold} now."
+      if user[:x] + 1 < board[user[:y]].length
+        board[user[:y]][user[:x]] = "_"
+        user[:x] += 1
+        if board[user[:y]][user[:x]] == 'g'
+          user[:gold] += 10
+          message = "You found gold! You have #{user[:gold]} now."
         end
-        board[user_y][user_x] = character.chars[0].upcase
+        board[user[:y]][user[:x]] = user[:initial]
       else
         message = "You bumped into a wall"
       end
     elsif move == 'p'
-      message = "You're at: #{user_x}, #{user_y}"
+      message = "You're at: #{user[:x]}, #{user[:y]}"
     elsif move == 'i'
-      message = "You have #{user_gold} gold now."
+      message = "You have #{user[:gold]} gold now."
     elsif move == 'x'
       message = "Thanks for playing!"
       break
