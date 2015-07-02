@@ -40,7 +40,7 @@ def addGold(game)
       rando = r.rand(1..100)
       unless game[:obstacles].include? col
         if rando > 95 && col
-          game[:board][row_index][col_index] = "g"
+          game[:board][row_index][col_index] = game[:gold_tiles].sample
         end
       end
     end
@@ -54,10 +54,12 @@ def printBoard(game, user)
     row.each do |column|
       if column == user[:initial]
         print "#{column}".green.on_black
-      elsif column == "g"
+      elsif game[:gold_tiles].include? column
         print "#{column}".yellow.on_black
       elsif game[:obstacles].include? column
         print "#{column}".white.on_black
+      elsif game[:water_tiles].include? column
+        print "#{column}".light_blue.on_black
       else
         print "#{column}".light_black.on_black
       end
@@ -76,16 +78,17 @@ end
 def moveUser(game, user)
   game[:moveCount] += 1
   puts "WASD/P/I/X ?"
-  move = read_char
+  move = gets.chomp #read_char
   puts move
   if game[:validMoves].include? move
     if move == 'w' #|| "\e[A"
       puts "Walking up..."
       unless game[:obstacles].include? game[:board][user[:y] - 1][user[:x]]
+        game[:message] = ""
         game[:board][user[:y]][user[:x]] = "_"
         user[:y] -= 1
-        if game[:board][user[:y]][user[:x]] == 'g'
-          user[:gold] += 10
+        if game[:gold_tiles].include? game[:board][user[:y]][user[:x]]
+          user[:gold] += Random.new.rand(1..20)
           game[:message] = "You found gold! You have #{user[:gold]} now."
         end
         game[:board][user[:y]][user[:x]] = user[:initial]
@@ -95,11 +98,13 @@ def moveUser(game, user)
     elsif move == 'a' #|| "\e[D"
       puts "Walking left..."
       unless game[:obstacles].include? game[:board][user[:y]][user[:x] - 1]
+        game[:message] = ""
         game[:board][user[:y]][user[:x]] = "_"
         user[:x] -= 1
-        if game[:board][user[:y]][user[:x]] == 'g'
-          user[:gold] += 10
-          game[:message] = "You found gold! You have #{user[:gold]} now."
+        if game[:gold_tiles].include? game[:board][user[:y]][user[:x]]
+          goldFound = Random.new.rand(1..20)
+          user[:gold] += goldFound
+          game[:message] = "You found #{goldFound} gold! You have #{user[:gold]} now."
         end
         game[:board][user[:y]][user[:x]] = user[:initial]
       else
@@ -108,10 +113,11 @@ def moveUser(game, user)
     elsif move == 's' #|| "\e[B"
       puts "Walking down..."
       unless game[:obstacles].include? game[:board][user[:y] + 1][user[:x]]
+        game[:message] = ""
         game[:board][user[:y]][user[:x]] = "_"
         user[:y] += 1
-        if game[:board][user[:y]][user[:x]] == 'g'
-          user[:gold] += 10
+        if game[:gold_tiles].include? game[:board][user[:y]][user[:x]]
+          user[:gold] += Random.new.rand(1..20)
           game[:message] =  "You found gold! You have #{user[:gold]} now."
         end
         game[:board][user[:y]][user[:x]] = user[:initial]
@@ -121,10 +127,11 @@ def moveUser(game, user)
     elsif move == 'd' #|| "\e[C"
       puts "Walking right..."
       unless game[:obstacles].include? game[:board][user[:y]][user[:x] + 1]
+        game[:message] = ""
         game[:board][user[:y]][user[:x]] = "_"
         user[:x] += 1
-        if game[:board][user[:y]][user[:x]] == 'g'
-          user[:gold] += 10
+        if game[:gold_tiles].include? game[:board][user[:y]][user[:x]]
+          user[:gold] += Random.new.rand(1..20)
           game[:message] = "You found gold! You have #{user[:gold]} now."
         end
         game[:board][user[:y]][user[:x]] = user[:initial]
@@ -150,6 +157,8 @@ game = {
   board: createBoard,
   validMoves: ['w', 'a', 's', 'd', 'x', 'p', 'i'],
   obstacles: ['|', '#', '•'],
+  water_tiles: ['~', '≈', ''],
+  gold_tiles: ['*', '†', 'Ω'],
   moveCount: 0,
   message: ""
 }
