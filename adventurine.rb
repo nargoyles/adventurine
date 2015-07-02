@@ -13,6 +13,8 @@ def read_char
   if input == "\e" then
     input << STDIN.read_nonblock(3) rescue nil
     input << STDIN.read_nonblock(2) rescue nil
+  else
+    input.chomp
   end
 ensure
   STDIN.echo = true
@@ -51,11 +53,13 @@ def printBoard(game, user)
   game[:board].each do |row|
     row.each do |column|
       if column == user[:initial]
-        print "#{column}".green
+        print "#{column}".green.on_black
       elsif column == "g"
-        print "#{column}".yellow
+        print "#{column}".yellow.on_black
+      elsif game[:obstacles].include? column
+        print "#{column}".white.on_black
       else
-        print "#{column}"
+        print "#{column}".light_black.on_black
       end
     end
     puts ""
@@ -65,15 +69,13 @@ def printBoard(game, user)
     puts "You are in the northwestern most corner of a dungeon."
     puts "Use 'a' to move west, 's' to move south, 'w' to move north, and 'd' to move east"
     puts "Typing 'p' will show your position 'i' will show your inventory, and 'x' will quit"
+    puts ""
   end
 end
 
 def moveUser(game, user)
   game[:moveCount] += 1
-  game[:validMoves].each do |move|
-    print "#{move} "
-  end
-  print "?"
+  puts "WASD/P/I/X ?"
   move = read_char
   puts move
   if game[:validMoves].include? move
