@@ -51,9 +51,8 @@ class Creature
     goldFound = Random.new.rand(1..20)
     @gold += goldFound
     print 7.chr
-    system('say "You found gold"')
     game.setMessage("You found #{goldFound} gold! You have #{@gold} now.")
-    if @gold > 50
+    if @gold > 100
       system('say "You are so rich"')
     end
   end
@@ -83,7 +82,7 @@ class Creature
   def move(game)
     game.increaseMoveCount
     puts "WASD/P/I/X ?"
-    move = gets.chomp #read_char
+    move = read_char
     puts move
     if game.validMoves.include? move
       if move == 'w' #|| "\e[A"

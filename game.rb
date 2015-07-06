@@ -6,7 +6,7 @@ class Game
     @moveCount = 0
     @board = []
     @validMoves = ['w', 'a', 's', 'd', 'x', 'p', 'i']
-    @obstacles = ['|', '#', '•', '°']
+    @obstacles = ['|', '#', '•', 'o', '°']
     @water_tiles = ['~', '≈', '']
     @gold_tiles = ['*', '†', 'Ω']
     @message = ""
