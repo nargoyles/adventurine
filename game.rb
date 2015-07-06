@@ -51,13 +51,15 @@ class Game
     addGold
   end
 
-  def printBoard(user)
+  def printBoard(user, monster)
     system ("cls")
     system "clear"
     @board.each do |row|
       row.each do |column|
         if column == user.initial
           print "#{user.initial}".green.on_black.underline
+        elsif column == monster.initial
+          print "#{monster.initial}".red.on_black.underline
         elsif @gold_tiles.include? column
           print "#{column}".yellow.on_black
         elsif @obstacles.include? column
