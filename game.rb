@@ -1,16 +1,18 @@
 require 'colorize'
 
 class Game
-  attr_reader :moveCount, :board, :validMoves, :obstacles, :water_tiles, :gold_tiles, :message
-  def initialize
+  attr_reader :moveCount, :board, :validMoves, :obstacles, :water_tiles, :gold_tiles, :message, :floor, :user, :monsters
+  def initialize(user)
+    @floor = 1
+    @user = user
     @moveCount = 0
-    @board = []
     @validMoves = ['w', 'a', 's', 'd', 'x', 'p', 'i']
     @obstacles = ['|', '#', '•', 'o', '°']
     @water_tiles = ['≈', '~']
     @gold_tiles = ['*', '†', 'Ω']
     @message = ""
-    @floor = 1
+    @monsters = [Monster.new(8,10,50,"M", 5), Monster.new(2,2,50,"M", 5), Monster.new(4,4,50,"M", 5)]
+    @board = loadBoard
   end
 
   def increaseMoveCount
@@ -47,8 +49,7 @@ class Game
     end
   end
 
-  def updateBoard
-    increaseFloor()
+  def loadBoard
     @board = []
     file = File.new("#{@floor}.txt", "r")
     while (line = file.gets)
@@ -58,15 +59,21 @@ class Game
     addGold
   end
 
-  def printBoard(user, monster)
+  def moveMonsters
+    @monsters.each do |monster|
+      monster.move(self, true)
+    end
+  end
+
+  def printBoard
     system ("cls")
     system "clear"
     @board.each do |row|
       row.each do |column|
-        if column == user.initial
-          print "#{user.initial}".green.on_black.underline
-        elsif column == monster.initial
-          print "#{monster.initial}".red.on_black.underline
+        if column == @user.initial
+          print "#{@user.initial}".green.on_black.underline
+        elsif column == @monsters[0].initial
+          print "#{@monsters[0].initial}".red.on_black.underline
         elsif @gold_tiles.include? column
           print "#{column}".yellow.on_black
         elsif @obstacles.include? column

@@ -11,15 +11,12 @@ system "clear"
 #puts "What is your character's name?"
 #name = gets.chomp
 user = User.new(1,1,100,"N", "Nate")
-monster = Monster.new(8,10,50,"M", 5)
-game = Game.new
-game.updateBoard
-game.printBoard(user, monster)
+game = Game.new(user)
 
 loop do
   #Print the board each time through
-  game.printBoard(user, monster)
-  monster.move(game, true)
-  quitGame = user.move(game)
+  game.printBoard
+  game.moveMonsters
+  quitGame = game.user.move(game)
   break if quitGame #|| game[:moveCount] > 20
 end

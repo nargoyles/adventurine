@@ -62,9 +62,8 @@ class Creature
   end
 
   def move(game, random = false)
-    if random
-      move = ['w','a','s','d'].sample
-    else 
+    move = ['w','a','s','d'].sample
+    unless random
       game.increaseMoveCount
       puts "WASD/P/I/X ?"
       move = gets.chomp
@@ -74,8 +73,8 @@ class Creature
         puts "Walking up..."
         if game.board[@y][@x + 1] == 'E'
           game.increaseFloor
-          game.updateBoard
-          game.printBoard(self)
+          game.loadBoard
+          game.printBoard
         else
           unless game.obstacles.include? game.board[@y - 1][@x]
             game.setMessage("")
@@ -93,8 +92,8 @@ class Creature
         puts "Walking left..."
         if game.board[@y][@x + 1] == 'E'
           game.increaseFloor
-          game.updateBoard
-          game.printBoard(self)
+          game.loadBoard
+          game.printBoard
         else
           unless game.obstacles.include? game.board[@y][@x - 1]
             game.setMessage("")
@@ -112,8 +111,8 @@ class Creature
         puts "Walking down..."
         if game.board[@y][@x + 1] == 'E'
           game.increaseFloor
-          game.updateBoard
-          game.printBoard(self)
+          game.loadBoard
+          game.printBoard
         else
           unless game.obstacles.include? game.board[@y + 1][@x]
             game.setMessage("")
@@ -131,8 +130,8 @@ class Creature
         puts "Walking right..."
         if game.board[@y][@x + 1] == 'E'
           game.increaseFloor
-          game.updateBoard
-          game.printBoard(self)
+          game.loadBoard
+          game.printBoard
         else
           unless game.obstacles.include? game.board[@y][@x + 1]
             game.setMessage("")
