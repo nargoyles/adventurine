@@ -83,7 +83,7 @@ class Creature
   def move(game)
     game.increaseMoveCount
     puts "WASD/P/I/X ?"
-    move = read_char
+    move = gets.chomp #read_char
     puts move
     if game.validMoves.include? move
       if move == 'w' #|| "\e[A"
