@@ -61,16 +61,20 @@ class Creature
     @gold -= gold
   end
 
-  def move(game)
-    game.increaseMoveCount
-    puts "WASD/P/I/X ?"
-    move = gets.chomp
-    puts move
+  def move(game, random = false)
+    if random
+      move = ['w','a','s','d'].sample
+    else 
+      game.increaseMoveCount
+      puts "WASD/P/I/X ?"
+      move = gets.chomp
+    end
     if game.validMoves.include? move
       if move == 'w' #|| "\e[A"
         puts "Walking up..."
         if game.board[@y][@x + 1] == 'E'
-          game.updateBoard(self)
+          game.increaseFloor
+          game.updateBoard
           game.printBoard(self)
         else
           unless game.obstacles.include? game.board[@y - 1][@x]
@@ -88,7 +92,8 @@ class Creature
       elsif move == 'a' #|| "\e[D"
         puts "Walking left..."
         if game.board[@y][@x + 1] == 'E'
-          game.updateBoard(self)
+          game.increaseFloor
+          game.updateBoard
           game.printBoard(self)
         else
           unless game.obstacles.include? game.board[@y][@x - 1]
@@ -106,7 +111,8 @@ class Creature
       elsif move == 's' #|| "\e[B"
         puts "Walking down..."
         if game.board[@y][@x + 1] == 'E'
-          game.updateBoard(self)
+          game.increaseFloor
+          game.updateBoard
           game.printBoard(self)
         else
           unless game.obstacles.include? game.board[@y + 1][@x]
@@ -124,7 +130,8 @@ class Creature
       elsif move == 'd' #|| "\e[C"
         puts "Walking right..."
         if game.board[@y][@x + 1] == 'E'
-          game.updateBoard(self)
+          game.increaseFloor
+          game.updateBoard
           game.printBoard(self)
         else
           unless game.obstacles.include? game.board[@y][@x + 1]

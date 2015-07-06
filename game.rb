@@ -10,6 +10,7 @@ class Game
     @water_tiles = ['≈', '~']
     @gold_tiles = ['*', '†', 'Ω']
     @message = ""
+    @floor = 1
   end
 
   def increaseMoveCount
@@ -18,6 +19,14 @@ class Game
 
   def setMessage(message)
     @message = message
+  end
+
+  def setFloor(floor)
+    @floor = floor
+  end
+
+  def increaseFloor
+    @floor += 1
   end
 
   def addGold
@@ -38,12 +47,10 @@ class Game
     end
   end
 
-  def updateBoard(user)
-    user.setFloor(user.floor + 1)
-    user.setX(1)
-    user.setY(1)
+  def updateBoard
+    increaseFloor()
     @board = []
-    file = File.new("#{user.floor}.txt", "r")
+    file = File.new("#{@floor}.txt", "r")
     while (line = file.gets)
       @board.push(line.chomp.chars)
     end
