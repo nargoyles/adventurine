@@ -63,19 +63,19 @@ class Creature
   end
 
   def read_char
-    STDIN.echo = false
-    STDIN.raw!
+    $stdin.echo = false
+    $stdin.raw!
 
-    input = STDIN.getc.chr
+    input = $stdin.getc.chr
     if input == "\e" then
-      input << STDIN.read_nonblock(3) rescue nil
-      input << STDIN.read_nonblock(2) rescue nil
+      input << $stdin.read_nonblock(3) rescue nil
+      input << $stdin.read_nonblock(2) rescue nil
     else
       input.chomp
     end
   ensure
-    STDIN.echo = true
-    STDIN.cooked!
+    $stdin.echo = true
+    $stdin.cooked!
 
     return input.chomp.downcase
   end
