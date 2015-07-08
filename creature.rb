@@ -208,10 +208,10 @@ class Creature
         toFight = self.creatureCheck(game.monsters)
         if toFight.is_a? Array
           toFight.each do |creature|
-            creature.decreaseHealth(self.attack)
+            creature.decreaseHealth(@attack)
           end
         elsif toFight.is_a? Creature
-          toFight.decreaseHealth(self.attack)
+          toFight.decreaseHealth(@attack)
         end
 
       elsif move == 'p'
