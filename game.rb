@@ -1,3 +1,6 @@
+#!/bin/env ruby
+# encoding: utf-8
+
 require 'colorize'
 
 class Game
@@ -6,13 +9,14 @@ class Game
     @floor = 1
     @user = user
     @moveCount = 0
-    @validMoves = ['w', 'a', 's', 'd', 'x', 'p', 'i']
+    @validMoves = ['w', 'a', 's', 'd', 'x', 'p', 'i', 'f']
     @obstacles = ['|', '#', '•', 'o', '°']
     @water_tiles = ['≈', '~']
     @gold_tiles = ['*', '†', 'Ω']
     @message = ""
     @monsters = [Monster.new(8,10,50,"M", 5), Monster.new(2,2,50,"M", 5), Monster.new(4,4,50,"M", 5)]
     @board = loadBoard
+    addGold
   end
 
   def increaseMoveCount
@@ -56,7 +60,7 @@ class Game
       @board.push(line.chomp.chars)
     end
     file.close
-    addGold
+    return @board
   end
 
   def moveMonsters
@@ -66,8 +70,8 @@ class Game
   end
 
   def printBoard
-    system ("cls")
-    system "clear"
+  #  system ("cls")
+#    system "clear"
     @board.each do |row|
       row.each do |column|
         if column == @user.initial

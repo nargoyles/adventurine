@@ -31,6 +31,10 @@ class Creature
     end
   end
 
+  def decreaseHealth(attack)
+    @health -= attack
+  end
+
   def setX(x)
     @x = x
   end
@@ -59,6 +63,42 @@ class Creature
 
   def decreaseGold(gold)
     @gold -= gold
+  end
+
+  def creatureCheck(toCheck)
+    if toCheck.is_a? Array
+      toCheck.each do |creature|
+        if self.x == creature.x #check x
+          unless self.y == creature.y - 1 || self.y == creature.y + 1 #check y +/- 1
+            toCheck.delete creature #delete creature from toCheck
+          end
+        elsif self.y == creature.y
+          unless self.x == creature.x - 1 || self.x == creature.x + 1
+            toCheck.delete creature #delete creature from toCheck
+          end
+        else
+          toCheck.delete creature #delete creature from toCheck
+        end
+      end
+      return toCheck
+    elsif toCheck.is_a? Creature
+      if self.x == toCheck.x #check x
+        if self.y == toCheck.y - 1 || self.y == toCheck.y + 1#check y +/- 1
+          return toCheck
+        else
+          return nil
+        end
+      end
+      if self.y == toCheck.y
+        if self.x == toCheck.y - 1 || self.x == toCheck.y + 1
+          return toCheck
+        else
+          return nil
+        end
+      end
+    else
+      return nil
+    end
   end
 
   def move(game, random = false)
@@ -145,6 +185,17 @@ class Creature
             game.setMessage("You bumped into something hard")
           end
         end
+      elsif move == 'f'
+        game.setMessage("You draw your sword.")
+        toFight = self.creatureCheck(game.monsters)
+        if toFight.is_a? Array
+          toFight.each do |creature|
+            creature.decreaseHealth(self.attack)
+          end
+        elsif toFight.is_a? Creature
+          toFight.decreaseHealth(self.attack)
+        end
+
       elsif move == 'p'
         game.setMessage("You're at: #{@x}, #{@y}")
       elsif move == 'i'
