@@ -70,8 +70,8 @@ class Game
   end
 
   def printBoard
-  #  system ("cls")
-#    system "clear"
+    system ("cls")
+    system "clear"
     @board.each do |row|
       row.each do |column|
         if column == @user.initial

@@ -101,12 +101,30 @@ class Creature
     end
   end
 
+  def read_char
+    $stdin.echo = false
+    $stdin.raw!
+
+    input = $stdin.getc.chr
+    if input == "\e" then
+      input << $stdin.read_nonblock(3) rescue nil
+      input << $stdin.read_nonblock(2) rescue nil
+    else
+      input.chomp
+    end
+  ensure
+    $stdin.echo = true
+    $stdin.cooked!
+
+    return input.chomp.downcase
+  end
+
   def move(game, random = false)
     move = ['w','a','s','d'].sample
     unless random
       game.increaseMoveCount
       puts "WASD/P/I/X ?"
-      move = gets.chomp
+      move = read_char #gets.chomp
     end
     if game.validMoves.include? move
       if move == 'w' #|| "\e[A"
