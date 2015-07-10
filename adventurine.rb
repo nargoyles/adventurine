@@ -10,7 +10,7 @@ system "clear"
 #Hardcode this for now
 #puts "What is your character's name?"
 #name = gets.chomp
-user = User.new(1,1,100,"N", "Nate")
+user = User.new(1,1,100,"N",10,"Nate")
 game = Game.new(user)
 
 loop do

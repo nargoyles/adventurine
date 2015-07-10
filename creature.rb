@@ -1,9 +1,9 @@
 require 'io/console'
 
 class Creature
-  attr_reader :gold, :x, :y, :health, :initial
+  attr_reader :gold, :x, :y, :health, :initial, :attack
 
-  def initialize(x = nil, y = nil, health = nil, initial = nil)
+  def initialize(x = nil, y = nil, health = nil, initial = nil, attack = nil)
     if x.nil?
       @x = 2 #TODO: randomize this
     else
@@ -28,6 +28,12 @@ class Creature
       @initial = "@"
     else
       @initial = initial
+    end
+
+    if attack.nil?
+      @attack = 10
+    else
+      @attack = attack
     end
   end
 
@@ -101,30 +107,30 @@ class Creature
     end
   end
 
-  def read_char
-    $stdin.echo = false
-    $stdin.raw!
+#  def read_char
+#    $stdin.echo = false
+#    $stdin.raw!
 
-    input = $stdin.getc.chr
-    if input == "\e" then
-      input << $stdin.read_nonblock(3) rescue nil
-      input << $stdin.read_nonblock(2) rescue nil
-    else
-      input.chomp
-    end
-  ensure
-    $stdin.echo = true
-    $stdin.cooked!
+#    input = $stdin.getc.chr
+#    if input == "\e" then
+#      input << $stdin.read_nonblock(3) rescue nil
+#      input << $stdin.read_nonblock(2) rescue nil
+#    else
+#      input.chomp
+#    end
+#  ensure
+#    $stdin.echo = true
+#    $stdin.cooked!
 
-    return input.chomp.downcase
-  end
+#    return input.chomp.downcase
+#  end
 
   def move(game, random = false)
     move = ['w','a','s','d'].sample
     unless random
       game.increaseMoveCount
       puts "WASD/P/I/X ?"
-      move = read_char #gets.chomp
+      move = gets.chomp
     end
     if game.validMoves.include? move
       if move == 'w' #|| "\e[A"
@@ -209,9 +215,13 @@ class Creature
         if toFight.is_a? Array
           toFight.each do |creature|
             creature.decreaseHealth(@attack)
+            game.setMessage("#{game.message} You hit the monster! It now has #{@health} health.")
           end
         elsif toFight.is_a? Creature
           toFight.decreaseHealth(@attack)
+          game.setMessage("#{game.message} You hit the monster! It now has #{@health} health.")
+        else
+          game.setMessage("#{game.message} Nothing is there.")
         end
 
       elsif move == 'p'
