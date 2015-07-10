@@ -53,6 +53,10 @@ class Creature
     @y = value
   end
 
+  def setY(y)
+    @y = y
+  end
+
   def incrementY(y)
     @y += y
   end
@@ -223,7 +227,6 @@ class Creature
         else
           game.setMessage("#{game.message} Nothing is there.")
         end
-
       elsif move == 'p'
         game.setMessage("You're at: #{@x}, #{@y}")
       elsif move == 'i'
