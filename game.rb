@@ -72,12 +72,15 @@ class Game
   def printBoard
     system ("cls")
     system "clear"
-    @board.each do |row|
-      row.each do |column|
-        if column == @user.initial
+    @board.each_with_index do |row, y|
+      row.each_with_index do |column, x|
+        @monsters.each do |monster|
+          if monster.y == y && monster.x == x
+            print "#{@monsters[0].initial}".red.on_black.underline
+          end
+        end
+        if y == @user.y && x == @user.x
           print "#{@user.initial}".green.on_black.underline
-        elsif column == @monsters[0].initial
-          print "#{@monsters[0].initial}".red.on_black.underline
         elsif @gold_tiles.include? column
           print "#{column}".yellow.on_black
         elsif @obstacles.include? column

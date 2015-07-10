@@ -16,7 +16,7 @@ game = Game.new(user)
 loop do
   #Print the board each time through
   game.printBoard
-  game.moveMonsters
   quitGame = game.user.move(game)
   break if quitGame #|| game[:moveCount] > 20
+  game.moveMonsters
 end

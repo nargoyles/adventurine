@@ -19,7 +19,7 @@ class Creature
     if health.nil?
       @health = 50
     else
-      @heath = health
+      @health = health
     end
 
     @gold =  0
@@ -43,8 +43,8 @@ class Creature
     @x += x
   end
 
-  def setY(y)
-    @y = y
+  def y=(value)
+    @y = value
   end
 
   def incrementY(y)
